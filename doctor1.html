@@ -137,8 +137,10 @@
                             <i class="fas fa-comments"></i> Communiquer avec le médecin
                         </button>
                         <button class="button button-cv" onclick="showCV()">
-                            <i class="fas fa-file-alt"></i> Voir son CV
-                        </button>
+    <i class="fas fa-file-alt"></i> Voir son CV
+</button>
+
+
                     </div>
                     <div id="commOptions" class="comm-options">
                         <button onclick="textComm()">
@@ -169,39 +171,37 @@
     </div>
 
     <script>
-        function toggleCommOptions() {
-            var commOptions = document.getElementById('commOptions');
-            if (commOptions.style.display === "none" || commOptions.style.display === "") {
-                commOptions.style.display = "block";
-            } else {
-                commOptions.style.display = "none";
-            }
+        
+    function toggleCommOptions() {
+        var commOptions = document.getElementById('commOptions');
+        if (commOptions.style.display === "none" || commOptions.style.display === "") {
+            commOptions.style.display = "block";
+        } else {
+            commOptions.style.display = "none";
         }
+    }
 
-        function textComm() {
-            alert('Communication par texte non encore implémentée.');
-        }
+    function textComm() {
+        alert('Communication par texte non encore implémentée.');
+    }
 
-        function audioComm() {
-            alert('Communication par audio non encore implémentée.');
-        }
+    function audioComm() {
+        alert('Communication par audio non encore implémentée.');
+    }
 
-        function videoComm() {
-            alert('Communication par vidéo non encore implémentée.');
-        }
+    function videoComm() {
+        alert('Communication par vidéo non encore implémentée.');
+    }
 
-        function emailComm() {
-            window.location.href = 'mailto:antoinerichard@omnessante.fr';
-        }
+    function emailComm() {
+        window.location.href = 'mailto:antoinerichard@omnessante.fr';
+    }
 
-        function showCV() {
-            var cvImage = document.getElementById('cvImage');
-            if (cvImage.style.display === "none" || cvImage.style.display === "") {
-                cvImage.style.display = "block";
-            } else {
-                cvImage.style.display = "none";
-            }
-        }
+    function showCV() {
+        window.location.href = 'cv1.html'; // Redirige vers la nouvelle page qui affiche le CV
+    }
+
+
     </script>
 </body>
 </html>

@@ -137,8 +137,8 @@
                             <i class="fas fa-comments"></i> Communiquer avec le médecin
                         </button>
                         <button class="button button-cv" onclick="showCV()">
-                            <i class="fas fa-file-alt"></i> Voir son CV
-                        </button>
+    <i class="fas fa-file-alt"></i> Voir son CV
+</button>
                     </div>
                     <div id="commOptions" class="comm-options">
                         <button onclick="textComm()">
@@ -195,13 +195,8 @@
         }
 
         function showCV() {
-            var cvImage = document.getElementById('cvImage');
-            if (cvImage.style.display === "none" || cvImage.style.display === "") {
-                cvImage.style.display = "block";
-            } else {
-                cvImage.style.display = "none";
-            }
-        }
+        window.location.href = 'cv6.html'; // Redirige vers la nouvelle page qui affiche le CV
+    }
     </script>
 </body>
 </html>
