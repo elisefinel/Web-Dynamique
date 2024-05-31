@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services du Laboratoire</title>
+    <link rel="stylesheet" href="projet.css">
+    <script src="projet.js" defer></script>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <img src="logo.png" alt="Medicare Logo" class="logo">
+            <h1>Medicare: Services Médicaux</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="accueil.html">Accueil</a></li>
+                <li><a href="parcourir.html">Tout Parcourir</a></li>
+                <li><a href="recherche.html">Recherche</a></li>
+                <li><a href="rdv.html">Rendez-vous</a></li>
+                <li><a href="compte.html">Votre Compte</a></li>
+            </ul>
+        </nav>
+        <main>
+            <h2>Nos Services</h2>
+            <ul id="services-list">
+                <li data-service="covid">Dépistage covid-19</li>
+                <li data-service="preventive">Biologie préventive</li>
+                <li data-service="pregancy">Biologie de la femme enceinte</li>
+                <li data-service="routine">Biologie de routine</li>
+                <li data-service="cancer">Cancérologie</li>
+                <li data-service="gynecology">Gynécologie</li>
+            </ul>
+            <div id="service-details" style="display: none;">
+                <h3 id="service-title"></h3>
+                <p id="service-description"></p>
+                <div id="calendrier">
+                    <h4>Calendrier des créneaux disponibles</h4>
+                    <!-- Vous pouvez intégrer un calendrier ici -->
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer class="footer">
+        <strong>CONTACTS</strong>
+        <p>MAIL: medicare@omnescare.fr</p>
+        <p>TÉLÉPHONE : 06 45 29 78 11</p>
+        <p>ADRESSE : 41 Avenue de la Santé, PARIS</p>
+    </footer>
+</body>
+</html>
