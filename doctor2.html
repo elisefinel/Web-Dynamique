@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Sophie Martin</title>
+    <link rel="stylesheet" href="projet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .encadre_medecin {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            max-width: 800px;
+        }
+        .encadre_medecin img {
+            border-radius: 10px;
+            max-width: 200px;
+            margin-right: 20px;
+        }
+        .medecin_info {
+            text-align: left;
+        }
+        .medecin_info h2 {
+            margin-bottom: 10px;
+        }
+        .medecin_info p {
+            margin-bottom: 5px;
+        }
+        .actions {
+            margin-top: 10px;
+        }
+        .button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .button i {
+            margin-right: 8px;
+        }
+        .button-rdv {
+            background-color: #4CAF50;
+        }
+        .button-rdv:hover {
+            background-color: #45a049;
+        }
+        .button-comm {
+            background-color: #008CBA;
+        }
+        .button-comm:hover {
+            background-color: #007ba7;
+        }
+        .button-cv {
+            background-color: #f44336;
+        }
+        .button-cv:hover {
+            background-color: #e31b0c;
+        }
+        .comm-options {
+            display: none;
+            margin-top: 20px;
+        }
+        .comm-options button {
+            display: block;
+            margin: 5px 0;
+            padding: 10px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .comm-options button i {
+            margin-right: 10px;
+        }
+        .comm-options button:hover {
+            background-color: #ddd;
+        }
+        #cvImage {
+            display: none;
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: center;
+        }
+        #cvImage img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <img src="logo.png" alt="Medicare Logo" class="logo">
+            <h1>Medicare : Services Médicaux</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="accueil.html">Accueil</a></li>
+                <li><a href="parcourir.html">Tout Parcourir</a></li>
+                <li><a href="recherche.html">Recherche</a></li>
+                <li><a href="rdv.html">Rendez-vous</a></li>
+                <li><a href="compte.html">Votre Compte</a></li>
+            </ul>
+        </nav>
+        <main>
+            <div class="encadre_medecin">
+                <img src="medecin2.jpg" alt="Dr. Sophie Martin">
+                <div class="medecin_info">
+                    <h2>Dr. Sophie Martin</h2>
+                    <h2>Médecin Généraliste</h2>
+                    <p>Salle: EM314</p>
+                    <p>Téléphone: +33 01 22 33 44 55</p>
+                    <p>Email: sophiemartin@omnessante.fr</p>
+                    <div class="actions">
+                        <button class="button button-rdv" onclick="location.href='PRENDRE_RDV2.html'">
+                            <i class="fas fa-calendar-alt"></i> Prendre un RDV
+                        </button>
+                        <button class="button button-comm" onclick="toggleCommOptions()">
+                            <i class="fas fa-comments"></i> Communiquer avec le médecin
+                        </button>
+                        <button class="button button-cv" onclick="showCV()">
+                            <i class="fas fa-file-alt"></i> Voir son CV
+                        </button>
+                    </div>
+                    <div id="commOptions" class="comm-options">
+                        <button onclick="textComm()">
+                            <i class="fas fa-sms"></i> Texte
+                        </button>
+                        <button onclick="audioComm()">
+                            <i class="fas fa-microphone"></i> Audio
+                        </button>
+                        <button onclick="videoComm()">
+                            <i class="fas fa-video"></i> Vidéo
+                        </button>
+                        <button onclick="emailComm()">
+                            <i class="fas fa-envelope"></i> Courriel
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="cvImage">
+                <img src="cv2.jpg" alt="CV de Dr. Sophie Martin">
+            </div>
+        </main>
+        <footer>
+            <strong>CONTACTS</strong>
+            <p>MAIL: medicare@omnessante.fr</p>
+            <p>TÉLÉPHONE : 06 45 29 78 11</p>
+            <p>ADRESSE : 41 Avenue de la Santé, PARIS</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleCommOptions() {
+            var commOptions = document.getElementById('commOptions');
+            if (commOptions.style.display === "none" || commOptions.style.display === "") {
+                commOptions.style.display = "block";
+            } else {
+                commOptions.style.display = "none";
+            }
+        }
+
+        function textComm() {
+            alert('Communication par texte non encore implémentée.');
+        }
+
+        function audioComm() {
+            alert('Communication par audio non encore implémentée.');
+        }
+
+        function videoComm() {
+            alert('Communication par vidéo non encore implémentée.');
+        }
+
+        function emailComm() {
+            window.location.href = 'mailto:sophiemartin@omnessante.fr';
+        }
+
+        function showCV() {
+            var cvImage = document.getElementById('cvImage');
+            if (cvImage.style.display === "none" || cvImage.style.display === "") {
+                cvImage.style.display = "block";
+            } else {
+                cvImage.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

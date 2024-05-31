@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prendre un RDV - Dr. Antoine Richard</title>
+    <link rel="stylesheet" href="projet.css">
+    <style>
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .schedule-table th, .schedule-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .schedule-table th {
+            background-color: #f2f2f2;
+        }
+        .available {
+            background-color: #ffffff; /* White for available */
+            cursor: pointer;
+        }
+        .unavailable {
+            background-color: #add8e6; /* Light blue for unavailable */
+            cursor: not-allowed;
+        }
+        .na {
+            background-color: #000000; /* Black for not available at all */
+            color: #ffffff;
+        }
+    </style>
+    <script>
+        function bookSlot(slot) {
+            if (slot.classList.contains('available')) {
+                alert('Vous avez réservé le créneau de ' + slot.innerText);
+                slot.classList.remove('available');
+                slot.classList.add('unavailable');
+                // Add your logic to handle the booking process here (e.g., send data to the server)
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <img src="logo.png" alt="Medicare Logo" class="logo">
+            <h1>Medicare : Services Médicaux</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="accueil.html">Accueil</a></li>
+                <li><a href="parcourir.html">Tout Parcourir</a></li>
+                <li><a href="recherche.html">Recherche</a></li>
+                <li><a href="rdv.html">Rendez-vous</a></li>
+                <li><a href="compte.html">Votre Compte</a></li>
+            </ul>
+        </nav>
+        <main>
+            <h2>Prendre un Rendez-vous - Dr. Antoine Richard</h2>
+            <table class="schedule-table">
+                <tr>
+                    <th>Spécialité</th>
+                    <th>Médecin</th>
+                    <th colspan="2">Lundi</th>
+                    <th colspan="2">Mardi</th>
+                    <th colspan="2">Mercredi</th>
+                    <th colspan="2">Jeudi</th>
+                    <th colspan="2">Vendredi</th>
+                    <th colspan="2">Samedi</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>AM</th>
+                    <th>PM</th>
+                    <th>AM</th>
+                    <th>PM</th>
+                    <th>AM</th>
+                    <th>PM</th>
+                    <th>AM</th>
+                    <th>PM</th>
+                    <th>AM</th>
+                    <th>PM</th>
+                    <th>AM</th>
+                    <th>PM</th>
+                </tr>
+                <tr>
+                    <td>Médecine générale</td>
+                    <td>BOUREE, Patrice</td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">14:00</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">09:00</td>
+                    <td class="available" onclick="bookSlot(this)">14:00</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">09:00</td>
+                    <td class="unavailable">14:00</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">14:20</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">09:20</td>
+                    <td class="unavailable">14:20</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">09:20</td>
+                    <td class="unavailable">14:20</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">14:40</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">09:40</td>
+                    <td class="unavailable">14:40</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">09:40</td>
+                    <td class="unavailable">14:40</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="na"></td>
+                    <td class="unavailable">15:00</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">10:00</td>
+                    <td class="available" onclick="bookSlot(this)">15:00</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">10:00</td>
+                    <td class="available" onclick="bookSlot(this)">15:00</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">15:20</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="unavailable">10:20</td>
+                    <td class="available" onclick="bookSlot(this)">15:20</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="unavailable">10:20</td>
+                    <td class="available" onclick="bookSlot(this)">15:20</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">15:40</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">10:40</td>
+                    <td class="available" onclick="bookSlot(this)">15:40</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">10:40</td>
+                    <td class="unavailable">15:40</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="na"></td>
+                    <td class="unavailable">16:00</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">11:00</td>
+                    <td class="unavailable">16:00</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">11:00</td>
+                    <td class="unavailable">16:00</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">16:20</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">11:20</td>
+                    <td class="available" onclick="bookSlot(this)">16:20</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">11:20</td>
+                    <td class="unavailable">16:20</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">16:40</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="unavailable">11:40</td>
+                    <td class="available" onclick="bookSlot(this)">16:40</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="unavailable">11:40</td>
+                    <td class="available" onclick="bookSlot(this)">16:40</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="na"></td>
+                    <td class="unavailable">17:00</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">12:00</td>
+                    <td class="unavailable">17:00</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">12:00</td>
+                    <td class="available" onclick="bookSlot(this)">17:00</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">17:20</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">17:20</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">17:20</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">17:40</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">17:40</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">17:40</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">18:00</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">18:00</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                    <td class="available" onclick="bookSlot(this)">18:00</td>
+                    <td class="na"></td>
+                    <td class="na"></td>
+                </tr>
+            </table>
+        </main>
+        <footer>
+            <strong>CONTACTS</strong>
+            <p>MAIL: medicare@omnessante.fr</p>
+            <p>TÉLÉPHONE : 06 45 29 78 11</p>
+            <p>ADRESSE : 41 Avenue de la Santé, PARIS</p>
+        </footer>
+    </div>
+</body>
+</html>
