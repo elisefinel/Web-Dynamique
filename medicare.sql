@@ -59,18 +59,19 @@ DROP TABLE IF EXISTS `utilisateur`;
 
 CREATE TABLE IF NOT EXISTS `utilisateur` (
   `Id_U` BIGINT NOT NULL AUTO_INCREMENT,
-  `Nom` varchar(255) NOT NULL,
-  `Prenom` varchar(255) NOT NULL,
-  `Email` varchar(255) NOT NULL,
-  `Mdp` varchar(255) NOT NULL,
+  `Nom` VARCHAR(255) NOT NULL,
+  `Prenom` VARCHAR(255) NOT NULL,
+  `Email` VARCHAR(255) NOT NULL,
+  `Mdp` CHAR(60) NOT NULL,
   `Type` ENUM('A', 'P', 'M') NOT NULL,
-  `Id_texto` varchar(255) DEFAULT NULL,
-  `Id_audio` varchar(255) DEFAULT NULL,
-  `Id_video` varchar(255) DEFAULT NULL,
+  `Id_texto` VARCHAR(255) DEFAULT NULL,
+  `Id_audio` VARCHAR(255) DEFAULT NULL,
+  `Id_video` VARCHAR(255) DEFAULT NULL,
   `Date_creation` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id_U`),
   UNIQUE KEY `unique_email` (`Email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 CREATE TABLE IF NOT EXISTS `medecin` (
   `Id_U` BIGINT NOT NULL,
@@ -149,6 +150,9 @@ CREATE TABLE IF NOT EXISTS `message` (
 COMMIT;
 
 
+INSERT INTO `utilisateur` (`Id_U`, `Nom`, `Prenom`, `Email`, `Mdp`, `Type`, `Id_texto`, `Id_audio`, `Id_video`, `Date_creation`) VALUES
+(2, 'Admin', 'Admin', 'a@admin.com', '$2y$10$19SyBTIkNLt5Iv3RjLhWUOx/AfXzE1aQ/LTVYZDVve9.t174NvdZO', 'A', NULL, NULL, NULL, '2024-06-01 19:10:23');
+COMMIT;
 
 
 
