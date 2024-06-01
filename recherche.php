@@ -1,53 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-<?php include 'header.php'; ?>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats de Recherche</title>
     <style>
-        .search-form {
-            margin: 20px auto;
-            padding: 20px;
-            width: 500px;
-            border: 1px solid grey;
-            border-radius: 40px;
-            background-color: #595959;
-            display: flex;
-            align-items: center;
+        body {
+            font-family: Arial, sans-serif;
         }
-
-        .search-form input[type="text"] {
+        .result {
+            margin: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
             padding: 10px;
-            width: 300px;
-            border: 1px solid grey;
+            background-color: #f4f4f4;
             border-radius: 5px;
-            margin-right: 10px;
         }
-
-        .search-form button {
-            padding: 10px 20px;
-            background-color: #FFE937;
-            color: grey;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            
-        }
-
-        .search-form button:hover {
-            background-color: #E3D031;
-        }       
     </style>
-
+</head>
 <body>
-    <div class="wrapper">
-	<?php include 'bandeau.php'; ?>
-		
-	<main>
-        <form action="recherche_resultats.html" method="get" class="search-form">
-            <input type="text" name="query" placeholder="Rechercher..." required>
-            <button type="submit">Rechercher</button>
-        </form>
-    </main>
-    <?php include 'footer.php'; ?>
-    </div>
+<div class="result">
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "medicare";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+
+if ($conn->connect_error) {
+    die("Erreur connexion : " . $conn->connect_error);
+}
+
+if (isset($_GET['query'])) {
+    $query = $_GET['query'];
+
+    
+    $sql = "SELECT * FROM services WHERE nom LIKE ? OR description LIKE ?";
+    $stmt = $conn->prepare($sql);
+    $searchTerm = "%$query%";
+    $stmt->bind_param("ss", $searchTerm, $searchTerm);
+
+    
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        
+        echo "<h2>Résultats de la recherche pour '$query'</h2>";
+        echo "<ul>";
+        while ($row = $result->fetch_assoc()) {
+            echo "<li><strong>" . htmlspecialchars($row['nom']) . ":</strong> " . htmlspecialchars($row['description']) . "</li>";
+        }
+        echo "</ul>";
+    } else {
+        echo "<p>Aucun résultat trouvé pour '$query'</p>";
+    }
+
+    
+    $stmt->close();
+} else {
+    echo "<p>Veuillez faire une recherche.</p>";
+}
+
+$conn->close();
+?>
+</div>
 </body>
 </html>
