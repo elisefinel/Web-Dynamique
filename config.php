@@ -1,4 +1,8 @@
 <?php
+define('ADMIN', 'A');
+define('PATIENT', 'P');
+define('MEDECIN', 'M');
+
 function getDbConnexion() {
     $host = 'localhost';
     $dbname = 'medicare';
@@ -13,4 +17,13 @@ function getDbConnexion() {
         die("Erreur de connexion : " . $e->getMessage());
     }
 }
+
+function verifierAdmin() {
+    // session_start();
+    if (!isset($_SESSION['user']) || $_SESSION['user']['Type'] !== ADMIN) {
+        header('Location: connexion.php');
+        exit();
+    }
+}	
 ?>
+

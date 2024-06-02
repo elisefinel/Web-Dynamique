@@ -2,7 +2,7 @@
 session_start();
 include 'header.php';
 include 'bandeau.php';
-require 'db.php';
+require_once 'config.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
         $pdo = getDbConnexion();
 
-        $stmt = $pdo->prepare("SELECT id_U, Mdp FROM utilisateur WHERE Email = :email");
+        $stmt = $pdo->prepare("SELECT * FROM utilisateur WHERE Email = :email");
         $stmt->bindParam(':email', $email);
         $stmt->execute();
 
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($user && password_verify($password, $user['Mdp'])) {
 			$_SESSION['user'] = $user;
             echo "Connexion réussie!";
-            header('Location: protected_page.php');
+            header('Location: index.php');
             exit();
         } else {
             echo "Email ou mot de passe incorrect!";
