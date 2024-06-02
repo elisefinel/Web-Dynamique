@@ -4,16 +4,17 @@ require_once 'config.php';
 
 try {
     $pdo = getDbConnexion();
-    $stmt = $pdo->prepare("SELECT utilisateur.Id_U, utilisateur.Nom, utilisateur.Prenom 
+    $stmt = $pdo->prepare("SELECT utilisateur.Id_U, utilisateur.Nom, utilisateur.Prenom, medecin.Spe 
                            FROM utilisateur 
                            INNER JOIN medecin ON utilisateur.Id_U = medecin.Id_U 
-                           WHERE medecin.Spe = 'Medecin Generaliste'");
+                           WHERE medecin.Spe != 'Medecin Generaliste'");
     $stmt->execute();
     $medecins = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Erreur : " . $e->getMessage();
 }
 ?>
+
 <style>
     table {
         width: 100%;
@@ -58,7 +59,7 @@ try {
 </style>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <?php include 'header.php'; ?>
 
 <body>
@@ -66,10 +67,11 @@ try {
         <?php include 'bandeau.php'; ?>
 
         <main>
-		<h2>Médecins Généralistes</h2>
+            <h2>Médecins Spécialistes</h2>
             <table>
                 <tr>
                     <th>Nom du Médecin</th>
+                    <th>Spécialité</th>
                 </tr>
 
                 <?php if (!empty($medecins)): ?>
@@ -80,11 +82,12 @@ try {
                                     Dr. <?php echo htmlspecialchars($medecin['Nom']) . ' ' . htmlspecialchars($medecin['Prenom']); ?>
                                 </a>
                             </td>
+                            <td><?php echo htmlspecialchars($medecin['Spe']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td>Aucun médecin généraliste trouvé.</td>
+                        <td colspan="2">Aucun médecin spécialiste trouvé.</td>
                     </tr>
                 <?php endif; ?>
             </table>

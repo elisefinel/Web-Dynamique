@@ -14,11 +14,11 @@
             </li>
             <li>
                 <img src="medecin_spe.png" alt="Médecins Spécialistes">
-                <a href="M_Spe.html" class="button">Médecins Spécialistes</a>
+                <a href="medecinSpecialiste.php" class="button">Médecins Spécialistes</a>
             </li>
             <li>
                 <img src="laboratoire.png" alt="Laboratoire de biologie médicale">
-                <a href="Lab.html" class="button">Laboratoire de biologie médicale</a>
+                <a href="labo.php" class="button">Laboratoire de biologie médicale</a>
             </li>
         </ul>
     </main>
