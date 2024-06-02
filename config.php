@@ -25,5 +25,12 @@ function verifierAdmin() {
         exit();
     }
 }	
+
+function verifierPatient() {
+    if (!isset($_SESSION['user']) || $_SESSION['user']['Type'] !== PATIENT) {
+        header('Location: connexion.php');
+        exit();
+    }
+}	
 ?>
 

@@ -2,6 +2,8 @@
 session_start();
 require_once 'config.php';
 
+verifierPatient();
+	
 if (!isset($_GET['id'])) {
     die("ID du médecin manquant.");
 }
@@ -43,7 +45,7 @@ try {
 
     $rdvs = [];
     foreach ($dates_semaine as $date) {
-        $stmt = $pdo->prepare("SELECT * FROM rdv WHERE Id_med = :id_med AND Date = :date");
+        $stmt = $pdo->prepare("SELECT * FROM rdv WHERE Id_med = :id_med AND Date = :date AND Statut ='valide'");
         $stmt->bindParam(':id_med', $id_medecin, PDO::PARAM_INT);
         $stmt->bindParam(':date', $date, PDO::PARAM_STR);
         $stmt->execute();
@@ -115,7 +117,7 @@ try {
                                     <?php if ($rdv_trouve): ?>
                                         Occupé
                                     <?php else: ?>
-                                        <a href="prendreRdv.php?id_med=<?php echo $id_medecin; ?>&id_horaire=<?php echo $horaire['Id_horaire']; ?>&date=<?php echo $date; ?>">Disponible</a>
+                                        <a href="prendreRdv2.php?id_med=<?php echo $id_medecin; ?>&id_horaire=<?php echo $horaire['Id_horaire']; ?>&date=<?php echo $date; ?>">Disponible</a>
                                     <?php endif; ?>
                                 </td>
                             <?php endforeach; ?>

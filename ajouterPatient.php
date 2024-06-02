@@ -5,7 +5,7 @@ verifierAdmin();
 
 try {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $userId = ajouterUser('PATIENT');
+        $userId = ajouterUser(PATIENT);
         if ($userId) {
 
             $numVital = $_POST['num_vital'];
