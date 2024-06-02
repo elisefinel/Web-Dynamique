@@ -1,79 +1,59 @@
+<?php
+
+require_once 'config.php';
+
+if (isset($_POST['query'])) {
+    $searchTerm = $_POST['query'];
+    $pdo = getDbConnexion();
+
+    
+    $stmt = $pdo->prepare("SELECT * FROM table_name WHERE column_name LIKE :searchTerm");
+    $stmt->execute(['searchTerm' => '%' . $searchTerm . '%']);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Résultats de Recherche</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .result {
-            margin: 20px;
-        }
-        h2 {
-            color: #333;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #f4f4f4;
-            border-radius: 5px;
-        }
-    </style>
+    <title>Résultats de la Recherche</title>
+    <link rel="stylesheet" href="projet.css">
 </head>
 <body>
-<div class="result">
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "medicare";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-
-if ($conn->connect_error) {
-    die("Erreur connexion : " . $conn->connect_error);
-}
-
-if (isset($_GET['query'])) {
-    $query = $_GET['query'];
-
-    
-    $sql = "SELECT * FROM services WHERE nom LIKE ? OR description LIKE ?";
-    $stmt = $conn->prepare($sql);
-    $searchTerm = "%$query%";
-    $stmt->bind_param("ss", $searchTerm, $searchTerm);
-
-    
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        
-        echo "<h2>Résultats de la recherche pour '$query'</h2>";
-        echo "<ul>";
-        while ($row = $result->fetch_assoc()) {
-            echo "<li><strong>" . htmlspecialchars($row['nom']) . ":</strong> " . htmlspecialchars($row['description']) . "</li>";
-        }
-        echo "</ul>";
-    } else {
-        echo "<p>Aucun résultat trouvé pour '$query'</p>";
-    }
-
-    
-    $stmt->close();
-} else {
-    echo "<p>Veuillez faire une recherche.</p>";
-}
-
-$conn->close();
-?>
-</div>
+    <div class="wrapper">
+        <header>
+            <img src="logo.png" alt="Medicare Logo" class="logo">
+            <h1>Medicare: Services Médicaux</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="accueil.html">Accueil</a></li>
+                <li><a href="parcourir.html">Tout Parcourir</a></li>
+                <li><a href="recherche.html">Recherche</a></li>
+                <li><a href="rdv.html">Rendez-vous</a></li>
+                <li><a href="compte.html">Votre Compte</a></li>
+            </ul>
+        </nav>
+        <main>
+            <h2>Résultats de la recherche :</h2>
+            <?php if (isset($results) && count($results) > 0): ?>
+                <ul>
+                    <?php foreach ($results as $result): ?>
+                        <li><?php echo htmlspecialchars($result['column_name']); ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else: ?>
+                <p>Pas de resultats pour:  "<?php echo htmlspecialchars($searchTerm); ?>"</p>
+            <?php endif; ?>
+        </main>
+        <footer>
+            <strong>CONTACTS</strong>
+            <p>MAIL: medicare@omnesante.fr</p>
+            <p>TELEPHONE : 06 45 29 78 11</p>
+            <p>ADRESSE : 41 Avenue de la Santé, PARIS </p>
+        </footer>
+    </div>
 </body>
 </html>
