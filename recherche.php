@@ -1,13 +1,26 @@
 <?php
 
-require_once 'config.php';
+require_once __DIR__ . '/config.php';
 
 if (isset($_POST['query'])) {
     $searchTerm = $_POST['query'];
     $pdo = getDbConnexion();
 
-    
-    $stmt = $pdo->prepare("SELECT * FROM table_name WHERE column_name LIKE :searchTerm");
+    // Requête SQL pour rechercher dans les trois tables
+    $stmt = $pdo->prepare("
+        SELECT 'medecin' AS type, utilisateur.Nom AS Nom, medecin.Spe AS detail 
+        FROM medecin 
+        JOIN utilisateur ON medecin.Id_U = utilisateur.Id_U 
+        WHERE utilisateur.Nom LIKE :searchTerm
+        UNION
+        SELECT 'service' AS type, Nom_service AS Nom, '' AS detail 
+        FROM service 
+        WHERE Nom_service LIKE :searchTerm
+        UNION
+        SELECT 'laboratoire' AS type, Nom AS Nom, Salle AS detail 
+        FROM labo 
+        WHERE Nom LIKE :searchTerm
+    ");
     $stmt->execute(['searchTerm' => '%' . $searchTerm . '%']);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -41,11 +54,19 @@ if (isset($_POST['query'])) {
             <?php if (isset($results) && count($results) > 0): ?>
                 <ul>
                     <?php foreach ($results as $result): ?>
-                        <li><?php echo htmlspecialchars($result['column_name']); ?></li>
+                        <li>
+                            <?php if ($result['type'] == 'medecin'): ?>
+                                Médecin: <?php echo htmlspecialchars($result['Nom']); ?>, Spécialité: <?php echo htmlspecialchars($result['detail']); ?>
+                            <?php elseif ($result['type'] == 'service'): ?>
+                                Service: <?php echo htmlspecialchars($result['Nom']); ?>
+                            <?php elseif ($result['type'] == 'laboratoire'): ?>
+                                Laboratoire: <?php echo htmlspecialchars($result['Nom']); ?>, Salle: <?php echo htmlspecialchars($result['detail']); ?>
+                            <?php endif; ?>
+                        </li>
                     <?php endforeach; ?>
                 </ul>
             <?php else: ?>
-                <p>Pas de resultats pour:  "<?php echo htmlspecialchars($searchTerm); ?>"</p>
+                <p>Aucun résultat trouvé pour "<?php echo htmlspecialchars($searchTerm); ?>"</p>
             <?php endif; ?>
         </main>
         <footer>
