@@ -19,7 +19,7 @@ try {
         die("Laboratoire non trouvé.");
     }
 
-    $stmt = $pdo->prepare("SELECT Nom_service, Salle, Tarif FROM service WHERE Id_Labo = :id");
+    $stmt = $pdo->prepare("SELECT Id_Service, Nom_service, Salle, Tarif FROM service WHERE Id_Labo = :id");
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
     $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -30,93 +30,93 @@ try {
 ?>
 
 <style>
-        .encadre_labo {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px auto;
-            display: flex;
-            align-items: center;
-            max-width: 1000px;
-        }
-        .encadre_labo img {
-            border-radius: 10px;
-            max-width: 200px;
-            margin-right: 20px;
-        }
-        .labo_info {
-            text-align: left;
-        }
-        .labo_info h2 {
-            margin-bottom: 10px;
-        }
-        .labo_info p {
-            margin-bottom: 5px;
-        }
-        .actions {
-            margin-top: 10px;
-        }
-        .button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-            margin: 5px;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .button i {
-            margin-right: 8px;
-        }
-        .button-service {
-            background-color: #4CAF50;
-        }
-        .button-service:hover {
-            background-color: #45a049;
-        }
-        .button-add-service {
-            background-color: #008CBA;
-        }
-        .button-add-service:hover {
-            background-color: #007ba7;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center; 
-            vertical-align: middle; 
-            color: black; 
-            font-weight: bold; 
-        }
-        th {
-            background-color: #649FCB;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2; 
-        }
-        tr:nth-child(odd) {
-            background-color: #e6f7ff;
-        }
-        tr:hover {
-            background-color: #cce7ff;
-        }
-        .title-and-button {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-    </style>
+    .encadre_labo {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px auto;
+        display: flex;
+        align-items: center;
+        max-width: 1000px;
+    }
+    .encadre_labo img {
+        border-radius: 10px;
+        max-width: 200px;
+        margin-right: 20px;
+    }
+    .labo_info {
+        text-align: left;
+    }
+    .labo_info h2 {
+        margin-bottom: 10px;
+    }
+    .labo_info p {
+        margin-bottom: 5px;
+    }
+    .actions {
+        margin-top: 10px;
+    }
+    .button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+        margin: 5px;
+        transition: background-color 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .button i {
+        margin-right: 8px;
+    }
+    .button-service {
+        background-color: #4CAF50;
+    }
+    .button-service:hover {
+        background-color: #45a049;
+    }
+    .button-add-service {
+        background-color: #008CBA;
+    }
+    .button-add-service:hover {
+        background-color: #007ba7;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center; 
+        vertical-align: middle; 
+        color: black; 
+        font-weight: bold; 
+    }
+    th {
+        background-color: #649FCB;
+        color: white;
+    }
+    tr:nth-child(even) {
+        background-color: #f2f2f2; 
+    }
+    tr:nth-child(odd) {
+        background-color: #e6f7ff;
+    }
+    tr:hover {
+        background-color: #cce7ff;
+    }
+    .title-and-button {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -161,7 +161,11 @@ try {
                     <?php if (!empty($services)): ?>
                         <?php foreach ($services as $service): ?>
                             <tr>
-                                <td><?php echo htmlspecialchars($service['Nom_service']); ?></td>
+                                <td>
+                                    <a href="prendreRdvService.php?id=<?php echo htmlspecialchars($service['Id_Service']); ?>">
+                                        <?php echo htmlspecialchars($service['Nom_service']); ?>
+                                    </a>
+                                </td>
                                 <td><?php echo htmlspecialchars($service['Salle']); ?></td>
                                 <td><?php echo htmlspecialchars($service['Tarif']); ?> €</td>
                             </tr>

@@ -2,11 +2,11 @@
 session_start();
 require_once 'config.php';
 
-if (!isset($_GET['id_med']) || !isset($_GET['id_horaire']) || !isset($_GET['date'])) {
+if (!isset($_GET['id_service']) || !isset($_GET['id_horaire']) || !isset($_GET['date'])) {
     die("Paramètres manquants.");
 }
 
-$id_med = intval($_GET['id_med']);
+$id_service = intval($_GET['id_service']);
 $id_horaire = intval($_GET['id_horaire']);
 $date = $_GET['date'];
 
@@ -17,22 +17,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
         $pdo = getDbConnexion();
 
-        $stmt = $pdo->prepare("SELECT Tarif FROM medecin WHERE Id_U = :id_med");
-        $stmt->bindParam(':id_med', $id_med, PDO::PARAM_INT);
+        $stmt = $pdo->prepare("SELECT Tarif FROM service WHERE Id_Service = :id_service");
+        $stmt->bindParam(':id_service', $id_service, PDO::PARAM_INT);
         $stmt->execute();
-        $medecin = $stmt->fetch(PDO::FETCH_ASSOC);
+        $service = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$medecin) {
-            throw new Exception("Médecin non trouvé.");
+        if (!$service) {
+            throw new Exception("Service non trouvé.");
         }
 
-        $tarif = $medecin['Tarif'];
+        $tarif = $service['Tarif'];
         $statut = 'valide';
 
-        $stmt = $pdo->prepare("INSERT INTO rdv (Id_pat, Id_med, Date, Id_horaire, Statut, Tarif, Informations) 
-                               VALUES (:id_pat, :id_med, :date, :id_horaire, :statut, :tarif, :informations)");
+        $stmt = $pdo->prepare("INSERT INTO rdv (Id_pat, Id_Service, Date, Id_horaire, Statut, Tarif, Informations) 
+                               VALUES (:id_pat, :id_service, :date, :id_horaire, :statut, :tarif, :informations)");
         $stmt->bindParam(':id_pat', $id_pat, PDO::PARAM_INT);
-        $stmt->bindParam(':id_med', $id_med, PDO::PARAM_INT);
+        $stmt->bindParam(':id_service', $id_service, PDO::PARAM_INT);
         $stmt->bindParam(':date', $date);
         $stmt->bindParam(':id_horaire', $id_horaire, PDO::PARAM_INT);
         $stmt->bindParam(':statut', $statut);
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <main>
             <h2>Prendre un Rendez-vous</h2>
             <div class="register-form">
-                <form action="prendreRdv2.php?id_med=<?php echo htmlspecialchars($id_med); ?>&id_horaire=<?php echo htmlspecialchars($id_horaire); ?>&date=<?php echo htmlspecialchars($date); ?>" method="POST">
+                <form action="prendreRdvService2.php?id_service=<?php echo htmlspecialchars($id_service); ?>&id_horaire=<?php echo htmlspecialchars($id_horaire); ?>&date=<?php echo htmlspecialchars($date); ?>" method="POST">
                     <label for="informations">Informations:</label>
                     <textarea id="informations" name="informations" required></textarea><br>
 
