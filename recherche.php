@@ -2,27 +2,32 @@
 
 require_once __DIR__ . '/config.php';
 
+$searchTerm = '';
+
 if (isset($_POST['query'])) {
     $searchTerm = $_POST['query'];
     $pdo = getDbConnexion();
 
-    // Requête SQL pour rechercher dans les trois tables
-    $stmt = $pdo->prepare("
-        SELECT 'medecin' AS type, utilisateur.Nom AS Nom, medecin.Spe AS detail 
-        FROM medecin 
-        JOIN utilisateur ON medecin.Id_U = utilisateur.Id_U 
-        WHERE utilisateur.Nom LIKE :searchTerm
-        UNION
-        SELECT 'service' AS type, Nom_service AS Nom, '' AS detail 
-        FROM service 
-        WHERE Nom_service LIKE :searchTerm
-        UNION
-        SELECT 'laboratoire' AS type, Nom AS Nom, Salle AS detail 
-        FROM labo 
-        WHERE Nom LIKE :searchTerm
-    ");
-    $stmt->execute(['searchTerm' => '%' . $searchTerm . '%']);
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    try {
+        $stmt = $pdo->prepare("
+            SELECT 'medecin' AS type, utilisateur.Nom AS Nom, medecin.Spe AS detail 
+            FROM medecin 
+            JOIN utilisateur ON medecin.Id_U = utilisateur.Id_U 
+            WHERE utilisateur.Nom LIKE :searchTerm
+            UNION
+            SELECT 'service' AS type, Nom_service AS Nom, '' AS detail 
+            FROM service 
+            WHERE Nom_service LIKE :searchTerm
+            UNION
+            SELECT 'laboratoire' AS type, Nom AS Nom, Salle AS detail 
+            FROM labo 
+            WHERE Nom LIKE :searchTerm
+        ");
+        $stmt->execute(['searchTerm' => '%' . $searchTerm . '%']);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "Erreur : " . $e->getMessage();
+    }
 }
 ?>
 
@@ -66,7 +71,7 @@ if (isset($_POST['query'])) {
                     <?php endforeach; ?>
                 </ul>
             <?php else: ?>
-                <p>Aucun résultat trouvé pour "<?php echo htmlspecialchars($searchTerm); ?>"</p>
+                <p>Rien ne correspond à votre recherche.</p>
             <?php endif; ?>
         </main>
         <footer>
