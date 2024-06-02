@@ -17,7 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
         $pdo = getDbConnexion();
 
-        $stmt = $pdo->prepare("SELECT Tarif FROM medecin WHERE Id_U = :id_med");
+        $stmt = $pdo->prepare("SELECT Tarif, utilisateur.Nom, utilisateur.Prenom FROM medecin
+                               INNER JOIN utilisateur ON medecin.Id_U = utilisateur.Id_U
+                               WHERE medecin.Id_U = :id_med");
         $stmt->bindParam(':id_med', $id_med, PDO::PARAM_INT);
         $stmt->execute();
         $medecin = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -27,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $tarif = $medecin['Tarif'];
+        $nom_medecin = $medecin['Nom'] . ' ' . $medecin['Prenom'];
         $statut = 'valide';
 
         $stmt = $pdo->prepare("INSERT INTO rdv (Id_pat, Id_med, Date, Id_horaire, Statut, Tarif, Informations) 
@@ -40,7 +43,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindParam(':informations', $informations);
 
         if ($stmt->execute()) {
-            echo "Rendez-vous pris avec succès!";
+            $stmt = $pdo->prepare("SELECT Label FROM horaire WHERE Id_horaire = :id_horaire");
+            $stmt->bindParam(':id_horaire', $id_horaire, PDO::PARAM_INT);
+            $stmt->execute();
+            $horaire = $stmt->fetch(PDO::FETCH_ASSOC);
+            $label_horaire = $horaire['Label'];
+
+            $contenu = "Votre rendez-vous avec le docteur $nom_medecin le $date à $label_horaire est confirmé.";
+            $stmt = $pdo->prepare("INSERT INTO message (Id_expediteur, Id_destinataire, Contenu, Date_Heure, Statut) 
+                                   VALUES (:id_expediteur, :id_destinataire, :contenu, NOW(), 'Pas lu')");
+            $stmt->bindParam(':id_expediteur', $id_med, PDO::PARAM_INT);
+            $stmt->bindParam(':id_destinataire', $id_pat, PDO::PARAM_INT);
+            $stmt->bindParam(':contenu', $contenu);
+
+            if ($stmt->execute()) {
+                echo "Rendez-vous pris avec succès!";
+            } else {
+                throw new Exception("Erreur lors de l'envoi du message de confirmation.");
+            }
         } else {
             throw new Exception("Erreur lors de la prise du rendez-vous.");
         }
