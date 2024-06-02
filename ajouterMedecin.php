@@ -14,10 +14,10 @@ try {
             $photo = file_get_contents($_FILES['photo']['tmp_name']);
             $photo2 = !empty($_FILES['photo2']['tmp_name']) ? file_get_contents($_FILES['photo2']['tmp_name']) : null;
             $video = !empty($_FILES['video']['tmp_name']) ? file_get_contents($_FILES['video']['tmp_name']) : null;
-            $coordonnes = !empty($_POST['coordonnes']) ? $_POST['coordonnes'] : null;
+            $salle = !empty($_POST['salle']) ? $_POST['salle'] : null;
 
             $pdo = getDbConnexion();
-            $stmt = $pdo->prepare("INSERT INTO medecin (Id_U, Num_identification, Spe, Tarif, CV, Photo, Photo2, Video, Coordonnes) VALUES (:id_u, :num_identification, :spe, :tarif, :cv, :photo, :photo2, :video, :coordonnes)");
+            $stmt = $pdo->prepare("INSERT INTO medecin (Id_U, Num_identification, Spe, Tarif, CV, Photo, Photo2, Video, Salle) VALUES (:id_u, :num_identification, :spe, :tarif, :cv, :photo, :photo2, :video, :salle)");
             $stmt->bindParam(':id_u', $userId);
             $stmt->bindParam(':num_identification', $num_identification);
             $stmt->bindParam(':spe', $spe);
@@ -26,7 +26,7 @@ try {
             $stmt->bindParam(':photo', $photo, PDO::PARAM_LOB);
             $stmt->bindParam(':photo2', $photo2, PDO::PARAM_LOB);
             $stmt->bindParam(':video', $video, PDO::PARAM_LOB);
-            $stmt->bindParam(':coordonnes', $coordonnes);
+            $stmt->bindParam(':salle', $salle);
 
             if ($stmt->execute()) {
                 echo "Médecin ajouté avec succès!";
@@ -84,8 +84,8 @@ try {
                     <label for="video">Vidéo:</label>
                     <input type="file" id="video" name="video"><br>
 
-                    <label for="coordonnes">Coordonnées:</label>
-                    <input type="text" id="coordonnes" name="coordonnes"><br>
+                    <label for="salle">Salle:</label>
+                    <input type="text" id="salle" name="salle"><br>
 
                     <button type="submit">Ajouter Médecin</button>
                 </form>

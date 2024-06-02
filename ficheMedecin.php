@@ -37,7 +37,7 @@
     }
 
     function textComm() {
-        alert('Communication par texte non encore implémentée.');
+        window.location.href = 'envoyerMessage.php?id_destinataire=<?php echo $id; ?>';
     }
 
     function audioComm() {
@@ -215,7 +215,5 @@
         </main>
         <?php include 'footer.php'; ?>
     </div>
-
-   
 </body>
 </html>

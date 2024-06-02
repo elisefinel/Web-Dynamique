@@ -7,17 +7,19 @@ function ajouterUser($type) {
         $prenom = $_POST['prenom'];
         $email = $_POST['email'];
         $password = $_POST['password'];
+        $telephone = $_POST['telephone'];
         
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
         try {
             $pdo = getDbConnexion();
 
-            $stmt = $pdo->prepare("INSERT INTO utilisateur (Nom, Prenom, Email, Mdp, Type) VALUES (:nom, :prenom, :email, :mdp, :type)");
+            $stmt = $pdo->prepare("INSERT INTO utilisateur (Nom, Prenom, Email, Mdp, Telephone, Type) VALUES (:nom, :prenom, :email, :mdp, :telephone, :type)");
             $stmt->bindParam(':nom', $nom);
             $stmt->bindParam(':prenom', $prenom);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':mdp', $hashedPassword);
+            $stmt->bindParam(':telephone', $telephone);
             $stmt->bindParam(':type', $type);
 
             if ($stmt->execute()) {
@@ -45,6 +47,9 @@ function afficherFormulaireUser() {
 
         <label for="password">Mot de passe:</label>
         <input type="password" id="password" name="password" required><br>
+
+        <label for="telephone">Téléphone:</label>
+        <input type="text" id="telephone" name="telephone" required><br>
     ';
 }
 ?>

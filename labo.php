@@ -4,16 +4,14 @@ require_once 'config.php';
 
 try {
     $pdo = getDbConnexion();
-    $stmt = $pdo->prepare("SELECT utilisateur.Id_U, utilisateur.Nom, utilisateur.Prenom 
-                           FROM utilisateur 
-                           INNER JOIN medecin ON utilisateur.Id_U = medecin.Id_U 
-                           WHERE medecin.Spe = 'Medecin Generaliste'");
+    $stmt = $pdo->prepare("SELECT Id_Labo, Nom FROM labo");
     $stmt->execute();
-    $medecins = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $laboratoires = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Erreur : " . $e->getMessage();
 }
 ?>
+
 <style>
     table {
         width: 100%;
@@ -52,39 +50,68 @@ try {
     h1 {
         text-align: center; 
     }
-    h2 {
-        text-align: center; 
+    .button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        background-color: #4CAF50;
+        cursor: pointer;
+        font-weight: bold;
+        margin: 5px;
+        transition: background-color 0.3s;
     }
-</style>
+    .button:hover {
+        background-color: #45a049;
+    }
+    .title-and-button {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .title-and-button h2 {
+        flex-grow: 1;
+        text-align: center;
+        margin: 0;
+    }
+    </style>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <?php include 'header.php'; ?>
 
 <body>
     <div class="wrapper">
+        
         <?php include 'bandeau.php'; ?>
 
         <main>
-		<h2>Médecins Généralistes</h2>
+            <div class="title-and-button">
+                <h2>Laboratoires de Biologie Médicale</h2>
+                <?php if (isset($_SESSION['user']) && $_SESSION['user']['Type'] === ADMIN): ?>
+                    <button class="button" onclick="location.href='ajouterLabo.php'">Ajouter Laboratoire</button>
+                <?php endif; ?>
+            </div>
+            
             <table>
                 <tr>
-                    <th>Nom du Médecin</th>
+                    <th>Nom du Laboratoire</th>
                 </tr>
 
-                <?php if (!empty($medecins)): ?>
-                    <?php foreach ($medecins as $medecin): ?>
+                <?php if (!empty($laboratoires)): ?>
+                    <?php foreach ($laboratoires as $laboratoire): ?>
                         <tr>
                             <td>
-                                <a href="ficheMedecin.php?id=<?php echo htmlspecialchars($medecin['Id_U']); ?>">
-                                    Dr. <?php echo htmlspecialchars($medecin['Nom']) . ' ' . htmlspecialchars($medecin['Prenom']); ?>
+                                <a href="ficheLabo.php?id=<?php echo htmlspecialchars($laboratoire['Id_Labo']); ?>">
+                                    <?php echo htmlspecialchars($laboratoire['Nom']); ?>
                                 </a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td>Aucun médecin généraliste trouvé.</td>
+                        <td>Aucun laboratoire trouvé.</td>
                     </tr>
                 <?php endif; ?>
             </table>

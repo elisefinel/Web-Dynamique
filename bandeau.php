@@ -18,6 +18,7 @@ require_once 'config.php';
         <li><a href="recherche.php">Recherche</a></li>
         <?php if (isset($_SESSION['user'])): ?>
             <li><a href="rdv.php">Rendez-vous</a></li>
+			<li><a href="message.php">Mes Messages</a></li>
             <?php if ($_SESSION['user']['Type'] === ADMIN): ?>
                 <li><a href="insertUtilisateur.php">Ajouter Utilisateur</a></li>
             <?php endif; ?>			
