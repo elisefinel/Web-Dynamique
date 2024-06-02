@@ -8,11 +8,11 @@ if (!isset($_SESSION['user'])) {
 }
 
 $id_pat = $_SESSION['user']['Id_U'];
+$date_actuelle = date('Y-m-d');
 
 try {
     $pdo = getDbConnexion();
     
-    // Requête pour les rendez-vous avec les médecins
     $stmt_med = $pdo->prepare("
         SELECT rdv.Id_rdv, rdv.Date, horaire.Label AS Heure, medecin.Salle, rdv.Tarif, rdv.Statut,
                CONCAT('Dr. ', utilisateur.Nom, ' ', utilisateur.Prenom) AS Nom
@@ -20,24 +20,25 @@ try {
         LEFT JOIN horaire ON rdv.Id_horaire = horaire.Id_horaire
         LEFT JOIN medecin ON rdv.Id_med = medecin.Id_U
         LEFT JOIN utilisateur ON medecin.Id_U = utilisateur.Id_U
-        WHERE rdv.Id_pat = :id_pat AND rdv.Id_med IS NOT NULL
+        WHERE rdv.Id_pat = :id_pat AND rdv.Id_med IS NOT NULL AND rdv.Date >= :date_actuelle
         ORDER BY rdv.Date, horaire.Label
     ");
     $stmt_med->bindParam(':id_pat', $id_pat, PDO::PARAM_INT);
+    $stmt_med->bindParam(':date_actuelle', $date_actuelle, PDO::PARAM_STR);
     $stmt_med->execute();
     $rdvs_med = $stmt_med->fetchAll(PDO::FETCH_ASSOC);
 
-    // Requête pour les rendez-vous de services
     $stmt_serv = $pdo->prepare("
         SELECT rdv.Id_rdv, rdv.Date, horaire.Label AS Heure, service.Salle, rdv.Tarif, rdv.Statut,
                service.Nom_service AS Nom
         FROM rdv
         LEFT JOIN horaire ON rdv.Id_horaire = horaire.Id_horaire
         LEFT JOIN service ON rdv.Id_Service = service.Id_Service
-        WHERE rdv.Id_pat = :id_pat AND rdv.Id_Service IS NOT NULL
+        WHERE rdv.Id_pat = :id_pat AND rdv.Id_Service IS NOT NULL AND rdv.Date >= :date_actuelle
         ORDER BY rdv.Date, horaire.Label
     ");
     $stmt_serv->bindParam(':id_pat', $id_pat, PDO::PARAM_INT);
+    $stmt_serv->bindParam(':date_actuelle', $date_actuelle, PDO::PARAM_STR);
     $stmt_serv->execute();
     $rdvs_serv = $stmt_serv->fetchAll(PDO::FETCH_ASSOC);
 
@@ -46,8 +47,11 @@ try {
 }
 ?>
 
-
 <style>
+    .button-right {
+        float: right;
+        margin: 10px 0;
+    }
     table {
         width: 100%;
         border-collapse: collapse;
@@ -89,7 +93,6 @@ try {
     }
 </style>
 
-
 <!DOCTYPE html>
 <html lang="fr">
 <?php include 'header.php'; ?>
@@ -99,6 +102,9 @@ try {
         <?php include 'bandeau.php'; ?>
     
         <main>
+            <div class="button-right">
+                <button onclick="location.href='historiqueRdv.php'">Historique</button>
+            </div>
             <h2>Mes Rendez-vous</h2>
 			<br>
             

@@ -21,6 +21,7 @@ require_once 'config.php';
 			<li><a href="message.php">Mes Messages</a></li>
             <?php if ($_SESSION['user']['Type'] === ADMIN): ?>
                 <li><a href="insertUtilisateur.php">Ajouter Utilisateur</a></li>
+				<li><a href="listeUtilisateur.php">Liste Utilisateur</a></li>
             <?php endif; ?>			
         <?php endif; ?>
         <li><a href="monCompte.php">Votre Compte</a></li>

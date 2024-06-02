@@ -1,48 +1,49 @@
 <?php
-
 require_once 'config.php';
+
+$searchTerm = '';
 
 if (isset($_POST['query'])) {
     $searchTerm = $_POST['query'];
     $pdo = getDbConnexion();
 
-    // Requête SQL pour rechercher dans les trois tables
-    $stmt = $pdo->prepare("
-        SELECT 'medecin' AS type, Nom AS Nom, Spe AS detail FROM Medecin WHERE Nom LIKE :searchTerm
-        UNION
-        SELECT 'service' AS type, Nom_Service AS Nom, '' AS detail FROM Service WHERE Nom_Service LIKE :searchTerm
-        UNION
-        SELECT 'laboratoire' AS type, Nom AS Nom, Salle AS detail FROM Labo WHERE Nom LIKE :searchTerm
-    ");
-    $stmt->execute(['searchTerm' => '%' . $searchTerm . '%']);
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    try {
+        $stmt = $pdo->prepare("
+            SELECT 'medecin' AS type, utilisateur.Nom AS Nom, medecin.Spe AS detail 
+            FROM medecin 
+            JOIN utilisateur ON medecin.Id_U = utilisateur.Id_U 
+            WHERE utilisateur.Nom LIKE :searchTerm
+            OR medecin.Spe LIKE :searchTerm
+            UNION
+            SELECT 'service' AS type, Nom_service AS Nom, '' AS detail 
+            FROM service 
+            WHERE Nom_service LIKE :searchTerm
+            UNION
+            SELECT 'laboratoire' AS type, Nom AS Nom, Salle AS detail 
+            FROM labo 
+            WHERE Nom LIKE :searchTerm
+        ");
+        $stmt->execute(['searchTerm' => '%' . $searchTerm . '%']);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "Erreur : " . $e->getMessage();
+    }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Résultats de la Recherche</title>
-    <link rel="stylesheet" href="projet.css">
-</head>
+<?php include 'header.php'; ?>
 <body>
     <div class="wrapper">
-        <header>
-            <img src="logo.png" alt="Medicare Logo" class="logo">
-            <h1>Medicare: Services Médicaux</h1>
-        </header>
-        <nav>
-            <ul>
-                <li><a href="accueil.html">Accueil</a></li>
-                <li><a href="parcourir.html">Tout Parcourir</a></li>
-                <li><a href="recherche.html">Recherche</a></li>
-                <li><a href="rdv.html">Rendez-vous</a></li>
-                <li><a href="compte.html">Votre Compte</a></li>
-            </ul>
-        </nav>
+        <?php include 'bandeau.php'; ?>
         <main>
+            <h2>Recherche</h2>
+            <form method="POST" action="recherche.php">
+                <input type="text" name="query" value="<?php echo htmlspecialchars($searchTerm); ?>" placeholder="Rechercher...">
+                <button type="submit">Rechercher</button>
+            </form>
+
             <h2>Résultats de la recherche :</h2>
             <?php if (isset($results) && count($results) > 0): ?>
                 <ul>
@@ -59,15 +60,10 @@ if (isset($_POST['query'])) {
                     <?php endforeach; ?>
                 </ul>
             <?php else: ?>
-                <p>Aucun résultat trouvé pour "<?php echo htmlspecialchars($searchTerm); ?>"</p>
+                <p>Rien ne correspond à votre recherche.</p>
             <?php endif; ?>
         </main>
-        <footer>
-            <strong>CONTACTS</strong>
-            <p>MAIL: medicare@omnesante.fr</p>
-            <p>TELEPHONE : 06 45 29 78 11</p>
-            <p>ADRESSE : 41 Avenue de la Santé, PARIS </p>
-        </footer>
+        <?php include 'footer.php'; ?>
     </div>
 </body>
 </html>
