@@ -40,7 +40,7 @@
             cursor: pointer;
             padding: 0.5em 1em;
             margin: 0 0.5em;
-            background-color: #007BFF;
+            background-color: #649FCB;
             color: white;
             border: none;
             border-radius: 5px;
