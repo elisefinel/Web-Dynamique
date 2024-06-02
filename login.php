@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user && password_verify($password, $user['Mdp'])) {
-            $_SESSION['id_U'] = $user['id_U'];
+			$_SESSION['user'] = $user;
             echo "Connexion réussie!";
             header('Location: protected_page.php');
             exit();
