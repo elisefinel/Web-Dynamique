@@ -20,7 +20,7 @@ try {
         LEFT JOIN horaire ON rdv.Id_horaire = horaire.Id_horaire
         LEFT JOIN medecin ON rdv.Id_med = medecin.Id_U
         LEFT JOIN utilisateur ON medecin.Id_U = utilisateur.Id_U
-        WHERE rdv.Id_pat = :id_pat AND rdv.Id_med IS NOT NULL AND rdv.Date >= :date_actuelle
+        WHERE rdv.Id_pat = :id_pat AND rdv.Id_med IS NOT NULL AND rdv.Date < :date_actuelle
         ORDER BY rdv.Date, horaire.Label
     ");
     $stmt_med->bindParam(':id_pat', $id_pat, PDO::PARAM_INT);
@@ -34,7 +34,7 @@ try {
         FROM rdv
         LEFT JOIN horaire ON rdv.Id_horaire = horaire.Id_horaire
         LEFT JOIN service ON rdv.Id_Service = service.Id_Service
-        WHERE rdv.Id_pat = :id_pat AND rdv.Id_Service IS NOT NULL AND rdv.Date >= :date_actuelle
+        WHERE rdv.Id_pat = :id_pat AND rdv.Id_Service IS NOT NULL AND rdv.Date < :date_actuelle
         ORDER BY rdv.Date, horaire.Label
     ");
     $stmt_serv->bindParam(':id_pat', $id_pat, PDO::PARAM_INT);
@@ -102,10 +102,8 @@ try {
         <?php include 'bandeau.php'; ?>
     
         <main>
-            <div class="button-right">
-                <button onclick="location.href='historiqueRdv.php'">Historique</button>
-            </div>
-            <h2>Mes Rendez-vous</h2>
+           
+            <h2>Historique des Rendez-vous</h2>
 			<br>
             
             <h3>Rendez-vous avec les Médecins</h3>
@@ -128,11 +126,7 @@ try {
                             <td><?php echo htmlspecialchars($rdv['Tarif']); ?> €</td>
                             <td><?php echo htmlspecialchars($rdv['Nom']); ?></td>
                             <td><?php echo htmlspecialchars($rdv['Statut']); ?></td>
-                            <td>
-                                <?php if ($rdv['Statut'] === 'valide'): ?>
-                                    <button onclick="location.href='annulerRdv.php?id_rdv=<?php echo htmlspecialchars($rdv['Id_rdv']); ?>'">Annuler</button>
-                                <?php endif; ?>
-                            </td>
+                            
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -162,11 +156,7 @@ try {
                             <td><?php echo htmlspecialchars($rdv['Tarif']); ?> €</td>
                             <td><?php echo htmlspecialchars($rdv['Nom']); ?></td>
                             <td><?php echo htmlspecialchars($rdv['Statut']); ?></td>
-                            <td>
-                                <?php if ($rdv['Statut'] === 'valide'): ?>
-                                    <button onclick="location.href='annulerRdv.php?id_rdv=<?php echo htmlspecialchars($rdv['Id_rdv']); ?>'">Annuler</button>
-                                <?php endif; ?>
-                            </td>
+                            
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
