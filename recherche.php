@@ -1,53 +1,59 @@
+<?php
+// Inclure le fichier de connexion à la base de données
+require_once 'config.php';
+
+if (isset($_POST['query'])) {
+    $searchTerm = $_POST['query'];
+    $pdo = getDbConnexion();
+
+    // Préparer et exécuter la requête de recherche
+    $stmt = $pdo->prepare("SELECT * FROM table_name WHERE column_name LIKE :searchTerm");
+    $stmt->execute(['searchTerm' => '%' . $searchTerm . '%']);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+?>
+
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-<?php include 'header.php'; ?>
-    <style>
-        .search-form {
-            margin: 20px auto;
-            padding: 20px;
-            width: 500px;
-            border: 1px solid grey;
-            border-radius: 40px;
-            background-color: #595959;
-            display: flex;
-            align-items: center;
-        }
-
-        .search-form input[type="text"] {
-            padding: 10px;
-            width: 300px;
-            border: 1px solid grey;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-
-        .search-form button {
-            padding: 10px 20px;
-            background-color: #FFE937;
-            color: grey;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            
-        }
-
-        .search-form button:hover {
-            background-color: #E3D031;
-        }       
-    </style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats de la Recherche</title>
+    <link rel="stylesheet" href="projet.css">
+</head>
 <body>
     <div class="wrapper">
-	<?php include 'bandeau.php'; ?>
-		
-	<main>
-        <form action="recherche_resultats.html" method="get" class="search-form">
-            <input type="text" name="query" placeholder="Rechercher..." required>
-            <button type="submit">Rechercher</button>
-        </form>
-    </main>
-    <?php include 'footer.php'; ?>
+        <header>
+            <img src="logo.png" alt="Medicare Logo" class="logo">
+            <h1>Medicare: Services Médicaux</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="accueil.html">Accueil</a></li>
+                <li><a href="parcourir.html">Tout Parcourir</a></li>
+                <li><a href="recherche.html">Recherche</a></li>
+                <li><a href="rdv.html">Rendez-vous</a></li>
+                <li><a href="compte.html">Votre Compte</a></li>
+            </ul>
+        </nav>
+        <main>
+            <h2>Résultats de la recherche :</h2>
+            <?php if (isset($results) && count($results) > 0): ?>
+                <ul>
+                    <?php foreach ($results as $result): ?>
+                        <li><?php echo htmlspecialchars($result['column_name']); // Affichez les résultats ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else: ?>
+                <p>Aucun résultat trouvé pour "<?php echo htmlspecialchars($searchTerm); ?>"</p>
+            <?php endif; ?>
+        </main>
+        <footer>
+            <strong>CONTACTS</strong>
+            <p>MAIL: medicare@omnesante.fr</p>
+            <p>TELEPHONE : 06 45 29 78 11</p>
+            <p>ADRESSE : 41 Avenue de la Santé, PARIS </p>
+        </footer>
     </div>
 </body>
 </html>
